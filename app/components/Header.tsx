@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { DarkModeToggle } from "./darkModeToggle";
+import useServerDarkMode from "@/hooks/useServerDarkMode";
 
 export const Header = ({ className }: { className?: string }) => {
+  const theme = useServerDarkMode();
+
   return (
     <header className={`flex justify-between items-center ${className}`}>
       <Link
@@ -11,7 +15,7 @@ export const Header = ({ className }: { className?: string }) => {
       </Link>
 
       <div className={"flex items-center space-x-4"}>
-        <div>Mode Toggle</div>
+        <DarkModeToggle defaultMode={theme} />
         <div>User Dropdown</div>
       </div>
     </header>

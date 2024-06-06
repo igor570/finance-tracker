@@ -4,6 +4,7 @@ type ButtonProps = {
   variant?: Variant;
   size?: Size;
   children: ReactNode;
+  onClick?: () => void;
 };
 
 type Variant = "default" | "outline" | "ghost";
@@ -25,9 +26,13 @@ const sizes = {
   lg: "text-lg px-4 py-2",
 };
 
-export const Button = ({ variant, size, children }: ButtonProps) => {
+export const Button = ({ variant, size, children, onClick }: ButtonProps) => {
   const getVariants = variant ? variants[variant] : variants["default"];
   const getSizes = size ? sizes[size] : sizes["base"];
 
-  return <button className={`${getVariants} ${getSizes}`}>{children}</button>;
+  return (
+    <button onClick={onClick} className={`${getVariants} ${getSizes}`}>
+      {children}
+    </button>
+  );
 };
