@@ -7,6 +7,8 @@ import {
   Label,
   Input,
   Select,
+  Seperator,
+  Skeleton,
 } from "../components";
 
 const Page = () => {
@@ -98,6 +100,25 @@ const Page = () => {
               <Label className="ml-2" id="terms">
                 Accept Terms
               </Label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div>
+          <h2 className={"mb-4 text-lg font-mono"}>Loading Skeleton</h2>
+          <Seperator />
+          <div className={"space-y-8"}>
+            <div className={"flex space-x-4"}>
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+            </div>
+            <div className={"space-y-4"}>
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
             </div>
           </div>
         </div>

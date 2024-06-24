@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { DarkModeToggle } from "./darkModeToggle";
+import { DarkModeToggle } from "../components"
 import useServerDarkMode from "@/hooks/useServerDarkMode";
 
 export const Header = ({ className }: { className?: string }) => {

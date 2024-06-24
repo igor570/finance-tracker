@@ -4,7 +4,7 @@ import useDarkMode from "@/hooks/useDarkMode";
 import { Button } from "./Button";
 import { Moon, Sun } from "lucide-react";
 
-export const DarkModeToggle = ({ defaultMode = "dark" }) => {
+export const DarkModeToggle = ({ defaultMode }: { defaultMode: string }) => {
   const { theme, toggleTheme } = useDarkMode(defaultMode);
   return (
     <Button variant="ghost" size="sm" onClick={toggleTheme}>
