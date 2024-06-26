@@ -7,7 +7,7 @@ import { transactionSchema } from "@/lib/schema";
 import { z } from "zod";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { clearTransactionListCache } from "@/lib/actions";
+import { clearTransactionListCache, createTransaction } from "@/lib/actions";
 
 type transactionFormFields = z.infer<typeof transactionSchema>;
 
@@ -16,6 +16,7 @@ export default function TransactionForm() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<transactionFormFields>({
     mode: "onTouched",
     resolver: zodResolver(transactionSchema),
@@ -31,17 +32,14 @@ export default function TransactionForm() {
       const requestBody = {
         ...data,
         created_at: `${data.date}T00:00:00`,
-        date: undefined, //remove date from object to be POST'ed
+        date: undefined,
       };
 
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
+      //TODO: Fix react hook form not updating state of options before sending data off
+
+      //send form data to postgres
       //clear cache and redirect to dashboard
+      await createTransaction(requestBody);
       await clearTransactionListCache();
       router.push("/dashboard");
     } finally {
@@ -54,7 +52,11 @@ export default function TransactionForm() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <Label className="mb-1">Type</Label>
-          <Select {...register("type")}>
+          <Select
+            {...register("type", {
+              onChange: (e) => setValue("type", e.target.value),
+            })}
+          >
             {types.map((type) => (
               <option key={type}>{type}</option>
             ))}
@@ -63,7 +65,11 @@ export default function TransactionForm() {
 
         <div>
           <Label className="mb-1">Category</Label>
-          <Select {...register("category")}>
+          <Select
+            {...register("category", {
+              onChange: (e) => setValue("category", e.target.value),
+            })}
+          >
             {categories.map((category) => (
               <option key={category}>{category}</option>
             ))}

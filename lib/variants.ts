@@ -24,3 +24,22 @@ export const categories = [
   "Education",
   "Miscellaneous",
 ];
+
+type Category =
+  | "Housing"
+  | "Transport"
+  | "Health"
+  | "Food"
+  | "Education"
+  | "Miscellaneous";
+
+type Type = "Income" | "Expense" | "Investment" | "Saving";
+
+export type Transaction = {
+  id?: number | string;
+  type: Type;
+  date?: string;
+  category: Category;
+  amount: number;
+  description: string;
+};

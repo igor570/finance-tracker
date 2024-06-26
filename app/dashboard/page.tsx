@@ -6,8 +6,11 @@ import { FetchTrend } from "@/app/dashboard/components/FetchTrend";
 import { FetchTrendSuspense } from "@/app/dashboard/components/FetchTrendSuspense";
 import { PlusCircle } from "lucide-react";
 import { sizes, variants } from "@/lib/variants";
+import { createClient } from "@/lib/supabase/server";
 
-const Page = () => {
+const Page = async () => {
+  const client = createClient();
+  const { data, error } = await client.from("transactions").select();
   return (
     <>
       <section className={"mb-8"}>

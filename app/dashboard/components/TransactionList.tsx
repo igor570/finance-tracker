@@ -1,5 +1,6 @@
 import { TransactionItem, TransactionSummary } from "@/app/components";
 import { Seperator } from "@/app/components";
+import { createClient } from "@/lib/supabase/server";
 
 type Transaction = {
   id: number;
@@ -33,16 +34,12 @@ const groupTransactionsByDate = (transactions: Transaction[]) => {
 };
 
 export const TransactionList = async () => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/transactions`,
-    {
-      next: {
-        tags: ["transaction-list"],
-      },
-    },
-  );
-
-  const transactions = await response.json();
+  //fetch data from postgres db on supabase
+  const supabase = createClient();
+  const { data: transactions, error } = await supabase
+    .from("transactions")
+    .select()
+    .order("created_at", { ascending: false });
   const groupedTransactions = groupTransactionsByDate(transactions);
 
   return (
