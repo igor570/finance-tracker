@@ -33,7 +33,9 @@ const groupTransactionsByDate = (transactions: Transaction[]) => {
 };
 
 export const TransactionList = async () => {
-  const response = await fetch("http://localhost:3100/transactions");
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/transactions`,
+  );
   const transactions = await response.json();
   const groupedTransactions = groupTransactionsByDate(transactions);
 
@@ -43,7 +45,7 @@ export const TransactionList = async () => {
         {Object.entries(groupedTransactions).map(
           ([date, { transactions, amount }]) => (
             <div key={date}>
-              <TransactionSummary date={parseInt(date)} amount={amount} />
+              <TransactionSummary date={date} amount={amount} />
               <Seperator />
               <div className="space-y-4">
                 {transactions.map((transaction: Transaction) => (

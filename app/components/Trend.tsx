@@ -35,7 +35,7 @@ export const Trend = ({ type, amount, prevAmount }: TrendProps) => {
 
   const calcPercentageDiff = (
     amount: number,
-    prevAmount: number | undefined
+    prevAmount: number | undefined,
   ) => {
     if (amount === undefined || prevAmount === undefined) return 0;
     return ((amount - prevAmount) / prevAmount) * 100;
@@ -44,7 +44,7 @@ export const Trend = ({ type, amount, prevAmount }: TrendProps) => {
   //prevents function re-running if value is the same as last render
   const percentageChange = useMemo(
     () => calcPercentageDiff(amount, prevAmount).toFixed(0),
-    [amount, prevAmount]
+    [amount, prevAmount],
   );
 
   return (

@@ -1,7 +1,7 @@
 import { useFormatCurrency } from "@/hooks/useFormatCurrency";
 
 type TransactionSummaryProps = {
-  date: number;
+  date: number | string;
   amount: number;
 };
 
@@ -10,6 +10,7 @@ export const TransactionSummary = ({
   amount,
 }: TransactionSummaryProps) => {
   const formattedAmount = useFormatCurrency(amount);
+
   return (
     <div className="flex text-gray-500 dark:text-gray-400 font-semibold">
       <div className="grow">{date}</div>

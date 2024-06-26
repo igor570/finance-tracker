@@ -1,7 +1,7 @@
-import { cookies } from "next/headers";
+import Cookies from "js-cookie";
 
 const useServerDarkMode = (defaultTheme = "dark") => {
-  return cookies().get("theme")?.value ?? defaultTheme;
+  return Cookies.get("theme") ?? defaultTheme;
 };
 
 export default useServerDarkMode;
