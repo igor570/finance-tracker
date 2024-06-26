@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { transactionSchema } from "@/lib/schema";
 import { z } from "zod";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { clearTransactionListCache } from "@/lib/actions";
 
 type transactionFormFields = z.infer<typeof transactionSchema>;
 
@@ -19,6 +21,7 @@ export default function TransactionForm() {
     resolver: zodResolver(transactionSchema),
   });
 
+  const router = useRouter();
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<transactionFormFields> = async (data) => {
@@ -28,6 +31,7 @@ export default function TransactionForm() {
       const requestBody = {
         ...data,
         created_at: `${data.date}T00:00:00`,
+        date: undefined, //remove date from object to be POST'ed
       };
 
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
@@ -37,6 +41,9 @@ export default function TransactionForm() {
         },
         body: JSON.stringify(requestBody),
       });
+      //clear cache and redirect to dashboard
+      await clearTransactionListCache();
+      router.push("/dashboard");
     } finally {
       setIsSaving(false);
     }

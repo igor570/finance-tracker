@@ -35,7 +35,13 @@ const groupTransactionsByDate = (transactions: Transaction[]) => {
 export const TransactionList = async () => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/transactions`,
+    {
+      next: {
+        tags: ["transaction-list"],
+      },
+    },
   );
+
   const transactions = await response.json();
   const groupedTransactions = groupTransactionsByDate(transactions);
 
