@@ -7,7 +7,7 @@ import { transactionSchema } from "@/lib/schema";
 import { z } from "zod";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { clearTransactionListCache, createTransaction } from "@/lib/actions";
+import { createTransaction } from "@/lib/actions";
 
 type transactionFormFields = z.infer<typeof transactionSchema>;
 
@@ -25,7 +25,7 @@ export default function TransactionForm() {
 
   const router = useRouter();
   const [isSaving, setIsSaving] = useState<boolean>(false);
-
+  const [lastError, setLastError] = useState<Error | undefined>();
   const onSubmit: SubmitHandler<transactionFormFields> = async (data) => {
     if (!data) return;
     setIsSaving(true);
@@ -39,8 +39,9 @@ export default function TransactionForm() {
       // send form data to postgres
       // clear cache and redirect to dashboard
       await createTransaction(requestBody);
-      await clearTransactionListCache();
       router.push("/dashboard");
+    } catch (err: any) {
+      if (err) setLastError(err);
     } finally {
       setIsSaving(false);
     }
@@ -124,7 +125,12 @@ export default function TransactionForm() {
         </div>
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex justify-between items-center">
+        <div>
+          {lastError && (
+            <div className={"text-red-400"}>{lastError.message}</div>
+          )}
+        </div>
         <Button isDisabled={isSaving}>Save</Button>
       </div>
     </form>
